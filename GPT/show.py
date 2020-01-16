@@ -35,7 +35,7 @@ def getMostSimilar(sen, chosen):
     return img, chosen
 
 
-def output_image_to_web(texts):
+def output_image_to_web_sote(texts):
     texts_split = texts.split("\n")
     res = dict()
     res['dataArr'] = []
@@ -63,7 +63,7 @@ def output_image_to_web(texts):
     print(res)
     return res
 
-def output_image_to_web_sote(texts):
+def output_image_to_web(texts):
     texts_split = texts.split("\n")
     res = dict()
     res['dataArr'] = []
@@ -106,6 +106,7 @@ def get_document_sentiment(sentences):
         return "happy"
     else:
         return "neutral"
+
 
 ######################
 
@@ -154,8 +155,7 @@ def sample_sequence(model, context, length, n_ctx, tokenizer, temperature=1.0, t
     with torch.no_grad():
         for _ in trange(length):
             inputs = {'input_ids': generated[0][-(n_ctx - 1):].unsqueeze(0)}
-            outputs = model(
-                **inputs)  # Note: we could also use 'past' with GPT-2/Transfo-XL/XLNet (cached hidden-states)
+            outputs = model(**inputs)  
             next_token_logits = outputs[0][0, -1, :]
             for id in set(generated):
                 next_token_logits[id] /= repitition_penalty
@@ -177,7 +177,7 @@ def word2story(initial):
     parser.add_argument('--temperature', default=0.5, type=float, required=False, help='生成温度，越高越随机')
     parser.add_argument('--topk', default=6, type=int, required=False, help='生成的时候最高几选一')
     parser.add_argument('--topp', default=0, type=float, required=False, help='生成的时候积累概率最高多少')
-    parser.add_argument('--model_config', default='/home/vindzilla/GPT/config/model_config_small.json', type=str, required=False,
+    parser.add_argument('--model_config', default='/home/vindzilla/GPT/config/model_config.json', type=str, required=False,
                         help='模型参数路径')
     parser.add_argument('--tokenizer_path', default='/home/vindzilla/GPT/cache/vocab_small.txt', type=str, required=False, help='词表路径')
     # parser.add_argument('--model_path', default='model/final_model', type=str, required=False, help='模型路径')
@@ -260,12 +260,11 @@ def word2story(initial):
                 text = ''.join(text).replace('##', '').strip()
                 res = output_image_to_web_sote(text)
                 print(res)
-                import pickle
+                
                 output = open('data.pkl', 'wb')
                 pickle.dump(res, output)
                 return res
 
 
 if __name__ == '__main__':
-
     word2story("mom")
