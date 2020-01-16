@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        
+    <!--    <script>-->
+    <!--        function openwin() {-->
+    <!--            window.open("index.html", "", "width=200,height=200")-->
+    <!--        }-->
+
+    <!--        function get_cookie(Name) {-->
+    <!--            var search = Name + "="-->
+    <!--            var returnvalue = "";-->
+    <!--            if (documents.cookie.length > 0) {-->
+    <!--                offset = documents.cookie.indexOf(search)-->
+    <!--                if (offset != -1) {-->
+    <!--                    offset += search.length-->
+    <!--                    end = documents.cookie.indexOf(";", offset);-->
+    <!--                    if (end == -1)-->
+    <!--                        end = documents.cookie.length;-->
+    <!--                    returnvalue = (documents.cookie.substring(offset, end))-->
+    <!--                }-->
+    <!--            }-->
+    <!--            return returnvalue;-->
+    <!--        }-->
+
+    <!--        function loadpopup() {-->
+    <!--            if (get_cookie('popped') == '') {-->
+    <!--                openwin()-->
+    <!--                documents.cookie = "popped=yes"-->
+    <!--            }-->
+    <!--        }-->
+    <!--    </script>-->
+    <meta charset="UTF-8">
+        <title>轮播图案例</title>
+        
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul,
+        ol {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .box,
+        .box li,
+        .box img {
+            width: 600px;
+            height: 400px;
+        }
+
+        .box {
+            margin: 100px auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .box .slider {
+            width: 700%;
+            position: absolute;
+            /* left: -600px; */
+            top: 0;
+        }
+
+        .box ul li {
+            float: left;
+        }
+
+        .circle {
+            position: absolute;
+            height: 20px;
+            left: 280px;
+            bottom: 10px;
+        }
+
+        .circle li {
+            width: 16px;
+            height: 16px;
+            background-color: #fff;
+            border-radius: 8px;
+            line-height: 16px;
+            text-align: center;
+            margin-left: 5px;
+            cursor: pointer;
+            float: left;
+        }
+
+        .arrow {
+            position: absolute;
+            top: 50%;
+            width: 30px;
+            height: 30px;
+            background: rgba(0, 0, 0, .5);
+            color: #fff;
+            font-size: 24px;
+            text-align: center;
+            line-height: 30px;
+            display: none;
+        }
+
+        .arrow:hover {
+            background: rgba(0, 0, 0, .3);
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+
+        .circle .current {
+            background-color: red;
+            color: #fff;
+        }
+
+        .test p:first-child {
+            text-align: center;
+            font-family: cursive;
+            font-size: 50px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: #fff;
+        }
+
+        .test p:first-child span {
+            cursor: pointer;
+            text-shadow: 0px 0px 2px #686868,
+            0px 1px 1px #ddd,
+            0px 2px 1px #d6d6d6,
+            0px 3px 1px #ccc,
+            0px 4px 1px #c5c5c5,
+            0px 5px 1px #c1c1c1,
+            0px 6px 1px #bbb,
+            0px 7px 1px #777,
+            0px 8px 3px rgba(100, 100, 100, 0.4),
+            0px 9px 5px rgba(100, 100, 100, 0.1),
+            0px 10px 7px rgba(100, 100, 100, 0.15),
+            0px 11px 9px rgba(100, 100, 100, 0.2),
+            0px 12px 11px rgba(100, 100, 100, 0.25),
+            0px 13px 15px rgba(100, 100, 100, 0.3);
+            -webkit-transition: all .1s linear;
+            transition: all .1s linear;
+        }
+
+        .test p:first-child span:hover {
+            text-shadow: 0px 0px 2px #686868,
+            0px 1px 1px #fff,
+            0px 2px 1px #fff,
+            0px 3px 1px #fff,
+            0px 4px 1px #fff,
+            0px 5px 1px #fff,
+            0px 6px 1px #fff,
+            0px 7px 1px #777,
+            0px 8px 3px #fff,
+            0px 9px 5px #fff,
+            0px 10px 7px #fff,
+            0px 11px 9px #fff,
+            0px 12px 11px #fff,
+            0px 13px 15px #fff;
+            -webkit-transition: all .1s linear;
+            transition: all .1s linear;
+        }
+
+    </style>
+
+</head>
+<body>
+<div align="center" class="test">
+    <h3>故事生成器</h3>
+    <label>你还在为超爱的神剧断更而烦恼吗？使用故事生成器，生成自己的专属剧情，从此看剧不求人！</label>
+</div>
+
+<div align="center">
+    <form method="POST">
+        <input name="text" value="topic"/>
+        <input type="submit">
+    </form>
+</div>
+<div align="center">
+    <textarea name="content" rows="6" cols="80"
+              onpropertychange="if(this.scrollHeight>80) this.style.posHeight=this.scrollHeight+5">输入几个回车试试</textarea>
+</div>
+<!--<body οnlοad="loadpopup()">-->
+<!--<div class="box">-->
+<!--    <label>-->
+<!--<textarea rows="10" cols="10">-->
+<!--test-->
+<!--test-->
+<!--test-->
+<!--test-->
+<!--tset-->
+<!--test-->
+<!--test-->
+<!--</textarea>-->
+<!--    </label>-->
+<!--</div>-->
+    
+<div class="box">
+            
+    <!-- 轮播图片 -->
+            
+    <ul id="slider" class="slider" style="left:-600px;">
+        <li><img src="{{ url_for('static', filename=show_data.path1 ) }}" alt="pitture">></li>
+        <li><img src="{{ url_for('static', filename=show_data.path1 ) }}" alt="pitture"></li>
+        <li><img src="{{ url_for('static', filename=show_data.path1 ) }}" alt="pitture"></li>
+        <li><img src="{{ url_for('static', filename=show_data.path1 ) }}" alt="pitture"></li>
+        <li><img src="{{ url_for('static', filename=show_data.path1 ) }}" alt="pitture"></li>
+        <li><img src="{{ url_for('static', filename=show_data.path1 ) }}" alt="pitture"></li>
+        <li><img src="{{ url_for('static', filename=show_data.path1 ) }}" alt="pitture"></li>
+        <!--                        <li><img src="images/5.jpg" alt="pitture"></li>-->
+        <!--                        <li><img src="images/1.jpg" alt="pitture"></li>-->
+        <!--                        <li><img src="images/2.jpg" alt="pitture"></li>-->
+        <!--                        <li><img src="images/3.jpg" alt="pitture"></li>-->
+        <!--                        <li><img src="images/4.jpg" alt="pitture"></li>-->
+        <!--                        <li><img src="images/5.jpg" alt="pitture"></li>-->
+        <!--                        <li><img src="images/1.jpg" alt="pitture"></li>-->
+                
+    </ul>
+            
+    <!-- 底部小圆点 -->
+            
+    <ol id="circle" class="circle">
+                    
+        <li class="current">1</li>
+                    
+        <li>2</li>
+                    
+        <li>3</li>
+                    
+        <li>4</li>
+                    
+        <li>5</li>
+                
+    </ol>
+            
+    <!-- 左右按钮 -->
+            <a href="javascript:;" id="prev" class="arrow prev">&lt;</a>
+            <a href="javascript:;" id="next" class="arrow next">&gt;</a>
+        
+</div>
+</body>
+<script>
+    var slider = document.getElementById("slider");
+    var box = slider.parentNode;//整个轮播容器
+    var circle = document.getElementById("circle");
+    var prev = document.getElementById("prev");
+    var next = document.getElementById("next");
+    var lis = circle.children;//小圆点
+    var iNow = 1;//记录当前是第几个小圆点;
+    var timerTwo = null;//用于存放定时器（自动轮播)名称
+
+    //滑动函数
+    function animate(obj, offset) {//对象，移动距离
+        clearInterval(obj.timer);
+        var timer = null;//用于存放定时器名称
+        var move = 15;//滑动(位移)次数
+        var speed = offset / move;//每次位移量，即步长
+        var target = slider.offsetLeft + offset;//目标值
+        var value = 0;//用于存放差值
+        obj.timer = setInterval(function () {
+            // console.log(slider.offsetLeft);
+            slider.style.left = slider.offsetLeft + speed + "px";
+            value = target - slider.offsetLeft;
+            if (Math.abs(value) < Math.abs(speed)) {
+                //差值小于步长,直接移动差值的数值
+                slider.style.left = slider.offsetLeft + value + "px";
+                // console.log("animate:"+slider.offsetLeft);
+                if (slider.offsetLeft < -3000) {//第七张图时跳转到第二张
+                    slider.style.left = -600 + "px";
+                } else if (slider.offsetLeft > -600) {//第一张图时跳转到第六张
+                    slider.style.left = -3000 + "px";
+                }
+                clearInterval(obj.timer);//清空定时器
+            }
+        }, 20);
+    }
+
+    //左右小箭头切换
+    prev.onclick = function () {
+        if (iNow == 1) {//当在第一个小圆点slider盒子右移时
+            iNow = 5;
+        } else {
+            iNow--;
+        }
+        showButton(iNow);
+        animate(slider, 600);//整个ul.slider盒子右移
+
+    }
+    next.onclick = function () {
+        if (iNow == 5) {
+            iNow = 1;
+        } else {
+            iNow++;
+        }
+        showButton(iNow);
+        animate(slider, -600);//整个ul.slider盒子左移
+    }
+    // 点击小圆点切换图片
+    for (var i = 0; i < lis.length; i++) {
+        lis[i].index = i + 1;//赋予每个小圆点对应的索引值(从1~5)
+        lis[i].onclick = function () {
+            if (this.className == "current") {
+                return;//点击当前图片对应的小圆点无效
+            }
+            var offset = (iNow - this.index) * 600;//通过当前小圆点的小圆点和鼠标经过的索引差值，得到移动距离,注意图片向右切换则slider盒子左移，反之同理；
+            animate(slider, offset);
+            iNow = this.index;//把鼠标经过的小圆点的索引赋给iNow
+            showButton(iNow);
+        }
+    }
+
+    //当前小圆点背景移动
+    function showButton(index) {
+        for (var j = 0; j < lis.length; j++) {
+            lis[j].className = "";
+        }
+        lis[index - 1].className = "current";//因为lis是伪数组，索引从0开始
+    }
+
+    //左右小箭头淡入淡出
+    box.onmouseover = function () {
+        prev.style.display = "block";
+        next.style.display = "block";
+        stopPlay();
+    }
+    box.onmouseout = function () {
+        prev.style.display = "none";
+        next.style.display = "none";
+        autoPlay();
+    }
+
+    //自动轮播
+    function autoPlay() {
+        timerTwo = setInterval(function () {
+            next.onclick();//每3秒执行一次点击右箭头效果
+        }, 3000);
+    }
+
+    function stopPlay() {
+        clearInterval(timerTwo);
+    }
+
+    autoPlay();//默认执行自动轮播
+</script>
+
+</html>

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>故事生成器</title>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='templates/css/carousel.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='templates/css/jquery.zySlide.css') }}">
+    <style type="text/css">
+        body {
+            background-color: #2A2A2A;
+            background-color: #2E2E2E:;
+        }
+        .text-div-wrapper {
+            position: relative;
+            left: 50%;
+            top: 0;
+            width: 100%;
+            font-size: 20px;
+            margin: 30px 0;
+        }
+        .text-zySlide {
+            position: absolute;
+            left: 0;
+            top: 0;
+            -webkit-transform: translateX(-50%);
+            transform: translateX(-50%)
+        }
+        .text-div-root {
+            width: 100%;
+            height: 1px;
+        }
+    </style>
+    <!--[if IE]>
+    <script src="http://libs.baidu.com/html5shiv/3.7/html5shiv.min.js"></script>
+    <![endif]-->
+</head>
+<body style="background:url(../camp/back6.jpg);background-size:100% 100%;" >
+    <div align="center" class="test" style="padding-top:20px; ">
+            <h3  style="font-size: 24px; "><span style="color: blue">故</span><span style="color: red">事</
+    span><span style="color: yellow">生</span><span style="color: blue">成</span><span style="color: green">器</span></h3>
+            <label  style="font-size: 18px">你还在为超爱的神剧断更而烦恼吗？使用故事生成器，生成自己的专属剧情，从此看剧不求人！</label>
+    </div> 
+    
+
+    <div class="box" style="margin: 12px">
+    
+    <div align="center" style="margin: 12px">
+        <form method="POST">
+            <input name="text" value="topic" style="border-radius: 8px; height: 30px; width: 120px;" />
+            &nbsp;
+            <input type="submit" value="生成" style="border-radius: 8px; height: 32px; width: 60px; font-size:13px;"/>
+        </form>
+    </div>
+    <br />
+    <br />
+    <div align="center">
+    <textarea name="content" rows="16" cols="80" style="border-radius: 18px;"
+              onpropertychange="if(this.scrollHeight>80) this.style.posHeight=this.scrollHeight+5">输入几个回车试试</textarea>
+    </div>
+    </div>
+
+    <div id="text-div" class="text-div-root">
+        <div class="text-div-wrapper">
+            <div class="text-zySlide">text</div>
+        </div>
+    </div>
+    <div id="Slide2" class="zy-Slide" style="width: 72%;">
+        <!--prev:元素中的文本通常会保留空格和换行符。而文本也会呈现为等宽字体。-->
+        <section class="previous">前一张</section>
+        <section class="next">后一张</section>
+        <ul>
+            <!--alt + shift : 可以创建一个矩形选择区域-->
+            <li><img src="{{ url_for('static',filename='templates/image/test/5.jpg')}}" /></li>
+            <!-- <li><img src="{{ url_for('static',filename='templates/image/test/6.jpg')}}" /></li> -->
+            <li><img src="templates/image/test/6.jpg" /></li>
+            <!-- <li><img src="{{ url_for('static',filename='templates/image/test/7.jpg')}}" /></li> -->
+            <li><img src="templates/image/test/7.jpg" /></li>
+            <!-- <li><img src="{{ url_for('static',filename='templates/image/test/1.jpg')}}" /></li>
+            <li><img src="{{ url_for('static',filename='templates/image/test/2.jpg')}}" /></li>
+            <li><img src="{{ url_for('static',filename='templates/image/test/3.jpg')}}" /></li>
+            <li><img src="{{ url_for('static',filename='templates/image/test/4.jpg')}}" /></li> -->
+        </ul>
+    </div>
+
+
+<script src="{{ url_for('static',filename='templates/js/jquery.min.js')}}"></script>
+<script src="{{ url_for('static',filename='templates/js/d3.v5.min.js')}}"></script>
+<script src="{{ url_for('static',filename='templates/js/jquery.zySlide.js')}}"></script>
+
+<script>
+
+$.ajax({
+    type: 'POST',
+    url: '/get_data',
+    // data: JSON.stringify(value_data),
+    contentType: 'application/json',
+    success: function (response_data) {
+        console.log("success", response_data)
+        start(response_data)
+    }   
+});
+
+
+function start(response_data) {
+    d3.select('.zy-Slide ul').html('')
+    d3.select('.zy-Slide ul').selectAll('li')
+      .data(response_data['dataArr']).enter()
+      .append('li').append('img').attr('src', d=>d['image'])
+    d3.select('.text-div-wrapper').html('')
+    d3.select('.text-div-wrapper').selectAll('.text-zySlide')
+      .data(response_data['dataArr']).enter()
+      .append('div').attr('class', 'text-zySlide').html(d=>d['text'])
+    $.noConflict()
+    jQuery('.zy-Slide').zySlide({ speed: 500 })
+    .css('border', '0px solid blue')
+}
+
+
+</script>
+</body>
+</html>
