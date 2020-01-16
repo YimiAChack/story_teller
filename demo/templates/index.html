@@ -29,7 +29,19 @@
         }
         .text-div-root {
             width: 100%;
-            height: 1px;
+            height: 40px;
+        }
+        .zy-Slide{
+            width:80%;
+            /*width:1000px;*/
+            /*height:292px;*/
+            height: 400px;
+            /*margin:115px auto 0;*/
+            margin:20px auto 0;
+        }
+        .zy-Slide section {
+            background: #2E2E2E
+
         }
     </style>
     <!--[if IE]>
@@ -38,81 +50,120 @@
 </head>
 <body style="background:url(../camp/back6.jpg);background-size:100% 100%;" >
     <div align="center" class="test" style="padding-top:20px; ">
-            <h3  style="font-size: 24px; "><span style="color: blue">故</span><span style="color: red">事</
-    span><span style="color: yellow">生</span><span style="color: blue">成</span><span style="color: green">器</span></h3>
-            <label  style="font-size: 18px">你还在为超爱的神剧断更而烦恼吗？使用故事生成器，生成自己的专属剧情，从此看剧不求人！</label>
+            <!-- <h3  style="font-size: 24px; "><span style="color: blue">故</span><span style="color: red">事</
+    span><span style="color: yellow">生</span><span style="color: blue">成</span><span style="color: green">器</span></h3> -->
+            <h3  style="font-size: 28px; color: black; ">Story Teller</h3>
+            <label  style="font-size: 18px">Are you still upset about the super-loving divine drama? Now you can use the story generator to generate your own exclusive plot!</label>
     </div> 
     
 
     <div class="box" style="margin: 12px">
     
     <div align="center" style="margin: 12px">
-        <form method="POST">
-            <input name="text" value="topic" style="border-radius: 8px; height: 30px; width: 120px;" />
+        <div>
+            <input id="user-input" name="text" value="topic" style="border-radius: 8px; height: 30px; width: 120px;" />
             &nbsp;
-            <input type="submit" value="生成" style="border-radius: 8px; height: 32px; width: 60px; font-size:13px;"/>
+            <button onclick="sendQ()" style="border-radius: 8px; height: 32px; width: 120px; font-size:13px; color:black; background-color: #33FFFF;">generate</button>
         </form>
     </div>
     <br />
     <br />
     <div align="center">
     <textarea name="content" rows="16" cols="80" style="border-radius: 18px;"
-              onpropertychange="if(this.scrollHeight>80) this.style.posHeight=this.scrollHeight+5">输入几个回车试试</textarea>
+              onpropertychange="if(this.scrollHeight>80) this.style.posHeight=this.scrollHeight+5">
+                  
+              </textarea>
     </div>
     </div>
 
-    <div id="text-div" class="text-div-root">
-        <div class="text-div-wrapper">
-            <div class="text-zySlide">text</div>
-        </div>
+<div id="text-div" class="text-div-root">
+    <div class="text-div-wrapper">
+        <div class="text-zySlide">text</div>
     </div>
-    <div id="Slide2" class="zy-Slide" style="width: 72%;">
-        <!--prev:元素中的文本通常会保留空格和换行符。而文本也会呈现为等宽字体。-->
-        <section class="previous">前一张</section>
-        <section class="next">后一张</section>
-        <ul>
-            <!--alt + shift : 可以创建一个矩形选择区域-->
-            <li><img src="{{ url_for('static',filename='templates/image/test/5.jpg')}}" /></li>
-            <!-- <li><img src="{{ url_for('static',filename='templates/image/test/6.jpg')}}" /></li> -->
-            <li><img src="templates/image/test/6.jpg" /></li>
-            <!-- <li><img src="{{ url_for('static',filename='templates/image/test/7.jpg')}}" /></li> -->
-            <li><img src="templates/image/test/7.jpg" /></li>
-            <!-- <li><img src="{{ url_for('static',filename='templates/image/test/1.jpg')}}" /></li>
-            <li><img src="{{ url_for('static',filename='templates/image/test/2.jpg')}}" /></li>
-            <li><img src="{{ url_for('static',filename='templates/image/test/3.jpg')}}" /></li>
-            <li><img src="{{ url_for('static',filename='templates/image/test/4.jpg')}}" /></li> -->
-        </ul>
-    </div>
+</div>
 
+<div id="Slide2" class="zy-Slide" style="width: 80%;">
+    <!--prev:元素中的文本通常会保留空格和换行符。而文本也会呈现为等宽字体。-->
+    <!-- <section class="previous">前一张</section>
+    <section class="next">后一张</section> -->
+    <ul>
+        <!-- <li><img src="{{ url_for('static',filename='templates/image/test/5.jpg')}}" /></li>
+        <li><img src="templates/image/test/6.jpg" /></li>
+        <li><img src="templates/image/test/7.jpg" /></li> -->
+    </ul>
+</div>
 
 <script src="{{ url_for('static',filename='templates/js/jquery.min.js')}}"></script>
 <script src="{{ url_for('static',filename='templates/js/d3.v5.min.js')}}"></script>
 <script src="{{ url_for('static',filename='templates/js/jquery.zySlide.js')}}"></script>
 
 <script>
-
-$.ajax({
-    type: 'POST',
-    url: '/get_data',
-    // data: JSON.stringify(value_data),
-    contentType: 'application/json',
-    success: function (response_data) {
-        console.log("success", response_data)
-        start(response_data)
-    }   
-});
+function sendQ(){
+    let value_data = document.getElementById("user-input").value
+    console.log(value_data)
+    $.ajax({
+        type: 'POST',
+        url: '/get_data',
+        data: JSON.stringify(value_data),
+        contentType: 'application/json',
+        success: function (response_data) {
+            console.log("success", response_data)
+            start(response_data)
+        }   
+    });
+}
 
 
 function start(response_data) {
+    let data_original = response_data['dataArr']
+    let len_li = data_original.length
+
+    console.log("-------------")
+    console.log(data_original)
+    console.log(len_li)
+
+
+    let data_new = null
+    if (len_li < 3 ) {
+        data_new = data_original
+    } else if (len_li < 5) {
+        // data_new = [].concat(data_original.slice(-1)).concat(data_original.slice(0, -1))
+        data_new = data_original
+    } else {
+        // data_new = [].concat(data_original.slice(-2)).concat(data_original.slice(0, -2))
+        data_new = data_original
+    }
+
+    // console.log("*************")
+    // console.log(data_new)
+
+    // d3.select('.zy-Slide ul').html('')
+    // d3.select('.zy-Slide ul').selectAll('li')
+    //   .data(response_data['dataArr']).enter()
+    //   .append('li').append('img').attr('src', d=>d['image'])
+
+    // d3.select('.text-div-wrapper').html('')
+    // d3.select('.text-div-wrapper').selectAll('.text-zySlide')
+    //   .data(response_data['dataArr']).enter()
+    //   .append('div').attr('class', 'text-zySlide').html(d=>d['text'])
+
+    // let story = data_new.map(d=>d['text']).join('\n\n')
+    // d3.select('textarea').html(story)
+    // $.noConflict()
+    // jQuery('.zy-Slide').zySlide({ speed: 500 }).css('border', '0px solid blue')
+
+
     d3.select('.zy-Slide ul').html('')
     d3.select('.zy-Slide ul').selectAll('li')
-      .data(response_data['dataArr']).enter()
+      .data(data_new).enter()
       .append('li').append('img').attr('src', d=>d['image'])
     d3.select('.text-div-wrapper').html('')
     d3.select('.text-div-wrapper').selectAll('.text-zySlide')
-      .data(response_data['dataArr']).enter()
+      .data(data_new).enter()
       .append('div').attr('class', 'text-zySlide').html(d=>d['text'])
-    $.noConflict()
+    let story = data_new.map(d=>d['text']).join('\n\n')
+    d3.select('textarea').html(story)
+    // $.noConflict()
     jQuery('.zy-Slide').zySlide({ speed: 500 })
     .css('border', '0px solid blue')
 }
