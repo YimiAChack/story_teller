@@ -11,9 +11,10 @@ import re
 from collections import Counter
 import random
 from TFIDF import *
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3"  # 此处设置程序使用哪些显卡
+os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3"  # 设置显卡
 
 
 
@@ -41,7 +42,6 @@ def output_image_to_web(texts):
     img_chosen = set()
 
     for i in trange(len(texts_split)):
-    #    for text in texts_split:
         text = texts_split[i]
         res_part = dict()
         if "):" in text:
@@ -78,6 +78,34 @@ def output_image_to_web_sote(texts):
         res_part['image'] = path
         res['dataArr'].append(res_part)
     return res
+
+
+
+
+def get_document_sentiment(sentences):
+    """
+    @description: extract sentiment from document
+    @sentences {list}: sentence list of document
+    @return: sentiment
+    """
+    
+    analyzer = SentimentIntensityAnalyzer()
+    score = 0.0
+    sen_len = len(sentences)
+    for sentence in sentences:
+        vs = analyzer.polarity_scores(sentence)
+        score += vs['compound']
+    score = score / sen_len
+
+    # positive sentiment: score >= 0.05
+    # neutral sentiment:  score > -0.05 and score < 0.05
+    # negative sentiment: score <= -0.05
+    if score <= -0.05:
+        return "sad"
+    elif score >= 0.05:
+        return "happy"
+    else:
+        return "neutral"
 
 ######################
 
@@ -213,7 +241,6 @@ def word2story(initial):
 
                 generated += 1
                 text = tokenizer.convert_ids_to_tokens(out)
-                # print(text)
 
                 for i, item in enumerate(text[:-1]):  # 确保英文前后有空格
                     if is_word(item) and is_word(text[i + 1]):
@@ -231,10 +258,6 @@ def word2story(initial):
 
 
                 text = ''.join(text).replace('##', '').strip()
-                # text = ''.join(text.split('\n')[:-1])
-                # print(text)
-
-                # res = output_image_to_web(text)
                 res = output_image_to_web_sote(text)
                 print(res)
                 import pickle
@@ -243,6 +266,6 @@ def word2story(initial):
                 return res
 
 
-initial = "mom"
 if __name__ == '__main__':
-    word2story(initial)
+
+    word2story("mom")
