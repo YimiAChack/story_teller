@@ -14,11 +14,11 @@ We designed a story generator. In our daily lives, we often encounter the breaki
 
 The following picture shows the final system of our project. The user could enter some keywords, such as “adventure”, and the story teller will first generate some texts related to the keywords, with realism. Not only dialogues, our project will also provide vivid scenes. Note that our project can be easily extended to any text generate tasks, here we just take the corpus of “Simpsons” as an example.
 
-![load fig failed](https://github.com/YimiAChack/story_teller/demo/show.png)
+![load fig failed](https://github.com/YimiAChack/story_teller/blob/master/demo/show.png)
 
 The technical framework is shown as follows. It consists of two main components. This first one is language model, and the second one is text-image retrieval model.
 
-![load fig failed](https://github.com/YimiAChack/story_teller/demo/framework.png)
+![load fig failed](https://github.com/YimiAChack/story_teller/blob/master/demo/framework.png)
 
 
 #### data
